@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clock Using Pure JS</title>
+    <title>Clock</title>
     <style>
         body {
             background-color: black;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -22,15 +23,15 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 1s ease; 
+            margin-bottom: 20px;
         }
         #toggleClock:hover {
             background-color: #9016a0; 
         }
         #clockContainer {
             position: relative;
-            margin-top: 20px;
             height: 40vw;
-            width: 40vw; 
+            width: 40vw;
             background: url(clock.png) no-repeat;
             background-size: 100%;
         }
@@ -61,6 +62,12 @@
             left: 49.25%;
             opacity: 0.8; 
         }
+        #digitalClock {
+            font-size: 24px;
+            color: white;
+            margin-top: 20px;
+            display: none; /* Hide the digital clock by default */
+        }
     </style>
 </head>
 <body>
@@ -69,19 +76,23 @@
         <div id="hour"></div>
         <div id="minute"></div>
         <div id="second"></div>
-    </div> 
+    </div>
+    <div id="digitalClock"></div>
     <script>
         const clockContainer = document.getElementById("clockContainer");
         const toggleButton = document.getElementById("toggleClock");
+        const digitalClock = document.getElementById("digitalClock");
 
         toggleButton.addEventListener("click", function() {
             if (clockContainer.style.display === "none") {
                 clockContainer.style.display = "block";
                 toggleButton.style.display = "none"; // Hide the button
+                digitalClock.style.display = "block"; // Show the digital clock
                 startClock();
             } else {
                 clockContainer.style.display = "none";
                 toggleButton.style.display = "block"; // Show the button
+                digitalClock.style.display = "none"; // Hide the digital clock
                 stopClock();
             }
         });
@@ -90,13 +101,16 @@
 
         function startClock() {
             clockInterval = setInterval(() => {
-                d = new Date();
-                htime = d.getHours();
-                mtime = d.getMinutes();
-                stime = d.getSeconds();
-                hrotation = 30 * htime + mtime / 2;
-                mrotation = 6 * mtime;
-                srotation = 6 * stime;
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                digitalClock.innerText = `${hours}:${minutes}:${seconds}`;
+
+                const hrotation = 30 * now.getHours() + now.getMinutes() / 2;
+                const mrotation = 6 * now.getMinutes();
+                const srotation = 6 * now.getSeconds();
 
                 hour.style.transform = `rotate(${hrotation}deg)`;
                 minute.style.transform = `rotate(${mrotation}deg)`;
