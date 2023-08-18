@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Using Pure JS</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #toggleClock {
+            font-size: 24px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #1e90ff;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 1s ease; 
+        }
+        #toggleClock:hover {
+            background-color: #9016a0; 
+        }
+        #clockContainer {
+            position: relative;
+            margin-top: 20px;
+            height: 40vw;
+            width: 40vw; 
+            background: url(clock.png) no-repeat;
+            background-size: 100%;
+        }
+        #hour, #minute, #second {
+            position: absolute;
+            background: rgb(75, 94, 158);
+            border-radius: 10px; 
+            transform-origin: bottom;
+        }
+        #hour {
+            width: 1.8%;
+            height: 25%;
+            top: 25%;
+            left: 48.85%;
+            opacity: 0.8;  
+        }
+        #minute {
+            width: 1.6%;
+            height: 30%;
+            top: 19%;
+            left: 48.9%;
+            opacity: 0.8;  
+        }
+        #second {
+            width: 1%;
+            height: 40%;
+            top: 9%;
+            left: 49.25%;
+            opacity: 0.8; 
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleClock">Click on me for time</button>
+    <div id="clockContainer" style="display: none;">
+        <div id="hour"></div>
+        <div id="minute"></div>
+        <div id="second"></div>
+    </div> 
+    <script>
+        const clockContainer = document.getElementById("clockContainer");
+        const toggleButton = document.getElementById("toggleClock");
+
+        toggleButton.addEventListener("click", function() {
+            if (clockContainer.style.display === "none") {
+                clockContainer.style.display = "block";
+                toggleButton.style.display = "none"; // Hide the button
+                startClock();
+            } else {
+                clockContainer.style.display = "none";
+                toggleButton.style.display = "block"; // Show the button
+                stopClock();
+            }
+        });
+
+        let clockInterval;
+
+        function startClock() {
+            clockInterval = setInterval(() => {
+                d = new Date();
+                htime = d.getHours();
+                mtime = d.getMinutes();
+                stime = d.getSeconds();
+                hrotation = 30 * htime + mtime / 2;
+                mrotation = 6 * mtime;
+                srotation = 6 * stime;
+
+                hour.style.transform = `rotate(${hrotation}deg)`;
+                minute.style.transform = `rotate(${mrotation}deg)`;
+                second.style.transform = `rotate(${srotation}deg)`;
+            }, 1000);
+        }
+
+        function stopClock() {
+            clearInterval(clockInterval);
+        }
+    </script>
+</body>
+</html>
